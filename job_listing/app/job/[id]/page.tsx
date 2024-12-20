@@ -1,16 +1,16 @@
-import { notFound } from 'next/navigation';
-import JobDetails from '@/components/JobDetails';
-import jobsData from '@/data/jobs.json';
-import React from 'react';
+import { notFound } from 'next/navigation'
+import JobDetails from '@/components/JobDetails'
+import jobsData from '@/data/jobs.json'
+import React from 'react'
 
 export default async function JobPage({ params }: { params: { id: string } }) {
- 
-  const jobId = params.id;
+  const jobId = params.id 
 
-  const job = jobsData.jobs.find((job) => job.id === jobId);
+ 
+  const job = jobsData.jobs.find((job) => job.id === jobId)
 
   if (!job) {
-    notFound();
+    notFound() 
   }
 
   return (
@@ -19,5 +19,5 @@ export default async function JobPage({ params }: { params: { id: string } }) {
         <JobDetails job={job} />
       </div>
     </div>
-  );
+  )
 }
