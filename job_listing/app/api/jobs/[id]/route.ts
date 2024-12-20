@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server'
+import { NextResponse } from 'next/server';
 
 const jobs = [
   {
@@ -15,25 +15,28 @@ const jobs = [
     location: 'New York, NY',
     description: 'Seeking an experienced product manager to lead our product development efforts...',
   },
-]
+];
 
+export async function handler(request: Request, { params }: { params: { id: string } }) {
+ 
+  if (request.method === 'GET') {
+    const job = jobs.find((job) => job.id === params.id);
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
-  
-  const job = jobs.find((job) => job.id === params.id)
+    if (!job) {
+      return new NextResponse('Job not found', { status: 404 });
+    }
 
-  if (!job) {
-    return new NextResponse('Job not found', { status: 404 })
+    return NextResponse.json(job);
   }
 
-  return NextResponse.json(job)
+  if (request.method === 'POST') {
+    const newJob = await request.json();
+    jobs.push(newJob);
+
+    return new NextResponse('Job added successfully', { status: 201 });
+  }
+
+  
+  return new NextResponse('Method Not Allowed', { status: 405 });
 }
 
-
-export async function POST(request: Request, { params }: { params: { id: string } }) {
- 
-  const newJob = await request.json()
-  jobs.push(newJob)
-
-  return new NextResponse('Job added successfully', { status: 201 })
-}
