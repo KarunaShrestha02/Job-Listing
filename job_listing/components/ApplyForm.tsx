@@ -30,7 +30,6 @@ type ApplyFormProps = {
 
 export default function ApplyForm({ jobId, onSuccess }: ApplyFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [resume, setResume] = useState<File | null>(null); // Add state for file input
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -38,7 +37,7 @@ export default function ApplyForm({ jobId, onSuccess }: ApplyFormProps) {
       fullName: '',
       email: '',
       coverLetter: '',
-      resume: '', // Initialize as an empty string
+      resume: undefined, 
     },
   });
 
@@ -49,12 +48,11 @@ export default function ApplyForm({ jobId, onSuccess }: ApplyFormProps) {
 
       await set(applicationRef, {
         ...values,
-        resume, // Include the file state
         jobId,
         submittedAt: new Date().toISOString(),
       });
 
-      console.log('Application submitted:', { ...values, resume, jobId });
+      console.log('Application submitted:', { ...values, jobId });
 
       onSuccess();
     } catch (error) {
@@ -107,21 +105,27 @@ export default function ApplyForm({ jobId, onSuccess }: ApplyFormProps) {
           )}
         />
 
-        <FormItem>
-          <FormLabel className="text-gray-700 font-medium">Resume (Optional)</FormLabel>
-          <FormControl>
-            <Input
-              type="file"
-              accept=".pdf,.doc,.docx"
-              onChange={(e) => setResume(e.target.files?.[0] || null)} // Handle file input manually
-              className="border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-            />
-          </FormControl>
-          <FormDescription className="text-gray-500 text-sm">
-            Upload your resume (PDF, DOC, or DOCX)
-          </FormDescription>
-          <FormMessage />
-        </FormItem>
+        <FormField
+          control={form.control}
+          name="resume"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-gray-700 font-medium">Resume (Optional)</FormLabel>
+              <FormControl>
+                <Input
+                  type="file"
+                  accept=".pdf,.doc,.docx"
+                  {...field}  
+                  className="border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                />
+              </FormControl>
+              <FormDescription className="text-gray-500 text-sm">
+                Upload your resume (PDF, DOC, or DOCX)
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <FormField
           control={form.control}

@@ -1,12 +1,11 @@
-
 import { notFound } from 'next/navigation';
 import JobDetails from '@/components/JobDetails';
 import jobsData from '@/data/jobs.json';
 import React from 'react';
 
 export default async function JobPage({ params }: { params: { id: string } }) {
- 
-  const jobId = params.id;
+  const { id: jobId } = await params; // Await params to resolve it
+
   const job = jobsData.jobs.find((job) => job.id === jobId);
 
   if (!job) {
