@@ -17,12 +17,23 @@ const jobs = [
   },
 ]
 
+
 export async function GET(request: Request, { params }: { params: { id: string } }) {
-  const job = jobs.find(job => job.id === params.id)
   
+  const job = jobs.find((job) => job.id === params.id)
+
   if (!job) {
     return new NextResponse('Job not found', { status: 404 })
   }
 
   return NextResponse.json(job)
+}
+
+
+export async function POST(request: Request, { params }: { params: { id: string } }) {
+ 
+  const newJob = await request.json()
+  jobs.push(newJob)
+
+  return new NextResponse('Job added successfully', { status: 201 })
 }
