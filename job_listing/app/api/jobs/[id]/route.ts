@@ -15,7 +15,6 @@ const jobs = [
     location: 'New York, NY',
     description: 'Seeking an experienced product manager to lead our product development efforts...',
   },
-  
 ]
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
@@ -27,4 +26,3 @@ export async function GET(request: Request, { params }: { params: { id: string }
 
   return NextResponse.json(job)
 }
-
