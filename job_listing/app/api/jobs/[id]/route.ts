@@ -1,5 +1,4 @@
-import { NextResponse } from 'next/server';
-
+import { NextResponse } from 'next/server'
 
 const jobs = [
   {
@@ -16,21 +15,16 @@ const jobs = [
     location: 'New York, NY',
     description: 'Seeking an experienced product manager to lead our product development efforts...',
   },
-];
+  // Add more job listings as needed
+]
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
-  const job = jobs.find((job) => job.id === params.id);
-
+  const job = jobs.find(job => job.id === params.id)
+  
   if (!job) {
-    return new NextResponse('Job not found', { status: 404 });
+    return new NextResponse('Job not found', { status: 404 })
   }
 
-  return NextResponse.json(job);
+  return NextResponse.json(job)
 }
 
-export async function POST(request: Request, { params }: { params: { id: string } }) {
-  const newJob = await request.json(); 
-  jobs.push(newJob);
-
-  return new NextResponse('Job added successfully', { status: 201 });
-}
