@@ -3,13 +3,13 @@ import JobDetails from '@/components/JobDetails';
 import jobsData from '@/data/jobs.json';
 import React from 'react';
 
-export default async function JobPage({ params }: { params: { id: string } }) {
-  const { id: jobId } = await params; // Await params to resolve it
+export default async function JobPage(context: { params: { id: string } }) {
+  const { id: jobId } = await context.params; // Await the params
 
   const job = jobsData.jobs.find((job) => job.id === jobId);
 
   if (!job) {
-    notFound(); 
+    notFound();
   }
 
   return (
